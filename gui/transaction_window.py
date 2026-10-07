@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk,messagebox
 from tkcalendar import DateEntry
 from services.transaction_service import (
     add_transaction,
@@ -53,7 +53,6 @@ def open_income_window(parent):
         state="readonly"
     )
     type_combobox.pack()
-    
     def save_income():
         amount = amount_entry.get()
         description = description_entry.get()
@@ -65,7 +64,20 @@ def open_income_window(parent):
 
         type_id = None
         typecategory = None
-
+        if not amount : 
+            messagebox.showerror("این فیلد خالی میباشد")   
+            return
+        if not selected_type : 
+            messagebox.showerror("فیلد انتخاب تایپ خالی میشباشد")
+            return
+        if not selectedCategory :
+            messagebox.showerror("فیلد انتخاب نوع خرید خالی میباشد")
+            return
+        try:
+            amount = float(amount)
+        except ValueError:
+            messagebox.showerror("Error", "Amount must be a number")
+            return
         for id, name in types:
             if name == selected_type:
                 type_id = id
